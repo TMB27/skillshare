@@ -215,13 +215,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Issues**: [GitHub Issues](https://github.com/TMB27/skillshare/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/TMB27/skillshare/discussions)
-- **Email**: [Contact Us](mailto:support@skillshare.app)
+- **Email**: [Contact Us](mailto:tejasbadhe72@gmail.com)
 
 ---
 
 <div align="center">
 
-**Made with ❤️ using Flutter**
+**Made with ❤️ by Tejas Badhe using Flutter**
 
 ⭐ **Star this repo if you find it helpful!** ⭐
 
