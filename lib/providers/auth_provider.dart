@@ -32,7 +32,7 @@ class AuthProvider extends ChangeNotifier {
       if (session != null) {
         await _loadUserProfile(session.user.id);
       }
-      
+
       _isInitialized = true;
     } catch (e) {
       _setError('Failed to initialize authentication: ${e.toString()}');
@@ -127,7 +127,8 @@ class AuthProvider extends ChangeNotifier {
       );
 
       if (response.user != null) {
-        // User profile will be loaded via auth state change listener
+        // Load user profile immediately and wait for it to complete
+        await _loadUserProfile(response.user!.id);
         return true;
       } else {
         _setError('Failed to sign in');
@@ -199,7 +200,8 @@ class AuthProvider extends ChangeNotifier {
     _clearError();
 
     try {
-      final avatarUrl = await SupabaseService.uploadAvatar(_currentUser!.id, filePath);
+      final avatarUrl =
+          await SupabaseService.uploadAvatar(_currentUser!.id, filePath);
       if (avatarUrl != null) {
         final updatedProfile = _currentUser!.copyWith(avatarUrl: avatarUrl);
         return await updateProfile(updatedProfile);
@@ -238,4 +240,3 @@ class AuthProvider extends ChangeNotifier {
     _clearError();
   }
 }
-

@@ -45,8 +45,10 @@ class _BookingsScreenState extends State<BookingsScreen>
       final authProvider = context.read<AuthProvider>();
       if (authProvider.currentUser != null) {
         final userId = authProvider.currentUser!.id;
-        final bookingsAsStudent = await SupabaseService.getBookingsAsStudent(userId);
-        final bookingsAsTeacher = await SupabaseService.getBookingsAsTeacher(userId);
+        final bookingsAsStudent =
+            await SupabaseService.getBookingsAsStudent(userId);
+        final bookingsAsTeacher =
+            await SupabaseService.getBookingsAsTeacher(userId);
 
         setState(() {
           _myBookings = bookingsAsStudent;
@@ -98,13 +100,15 @@ class _BookingsScreenState extends State<BookingsScreen>
                   controller: _tabController,
                   children: [
                     _buildBookingsList(_myBookings, isStudentView: true),
-                    _buildBookingsList(_myTeachingBookings, isStudentView: false),
+                    _buildBookingsList(_myTeachingBookings,
+                        isStudentView: false),
                   ],
                 ),
     );
   }
 
-  Widget _buildBookingsList(List<Booking> bookings, {required bool isStudentView}) {
+  Widget _buildBookingsList(List<Booking> bookings,
+      {required bool isStudentView}) {
     if (bookings.isEmpty) {
       return Center(
         child: Column(
@@ -117,7 +121,9 @@ class _BookingsScreenState extends State<BookingsScreen>
             ),
             const SizedBox(height: 16),
             Text(
-              isStudentView ? 'No bookings as student yet' : 'No teaching bookings yet',
+              isStudentView
+                  ? 'No bookings as student yet'
+                  : 'No teaching bookings yet',
               style: const TextStyle(
                 fontSize: 18,
                 color: AppTheme.textSecondary,
@@ -172,33 +178,41 @@ class _BookingsScreenState extends State<BookingsScreen>
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Icon(Icons.person, size: 18, color: AppTheme.textSecondary),
+                        const Icon(Icons.person,
+                            size: 18, color: AppTheme.textSecondary),
                         const SizedBox(width: 8),
                         Text(
-                          isStudentView ? 'Teacher: ${booking.teacherName}' : 'Student: ${booking.studentName}',
-                          style: const TextStyle(fontSize: 16, color: AppTheme.textSecondary),
+                          isStudentView
+                              ? 'Teacher: ${booking.teacherName}'
+                              : 'Student: ${booking.studentName}',
+                          style: const TextStyle(
+                              fontSize: 16, color: AppTheme.textSecondary),
                         ),
                       ],
                     ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        const Icon(Icons.calendar_today, size: 18, color: AppTheme.textSecondary),
+                        const Icon(Icons.calendar_today,
+                            size: 18, color: AppTheme.textSecondary),
                         const SizedBox(width: 8),
                         Text(
                           'Date: ${booking.bookingDate}',
-                          style: const TextStyle(fontSize: 16, color: AppTheme.textSecondary),
+                          style: const TextStyle(
+                              fontSize: 16, color: AppTheme.textSecondary),
                         ),
                       ],
                     ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        const Icon(Icons.access_time, size: 18, color: AppTheme.textSecondary),
+                        const Icon(Icons.access_time,
+                            size: 18, color: AppTheme.textSecondary),
                         const SizedBox(width: 8),
                         Text(
                           'Time: ${booking.bookingTime}',
-                          style: const TextStyle(fontSize: 16, color: AppTheme.textSecondary),
+                          style: const TextStyle(
+                              fontSize: 16, color: AppTheme.textSecondary),
                         ),
                       ],
                     ),
@@ -208,7 +222,8 @@ class _BookingsScreenState extends State<BookingsScreen>
                       child: Chip(
                         label: Text(booking.status.toUpperCase()),
                         backgroundColor: _getChipColor(booking.status),
-                        labelStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        labelStyle: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
@@ -236,4 +251,3 @@ class _BookingsScreenState extends State<BookingsScreen>
     }
   }
 }
-

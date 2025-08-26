@@ -8,10 +8,10 @@ import 'utils/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize Supabase
   await SupabaseService.initialize();
-  
+
   runApp(const SkillShareApp());
 }
 
@@ -25,15 +25,18 @@ class SkillShareApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => SkillsProvider()),
       ],
-      child: MaterialApp.router(
-        title: 'SkillShare',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
-        routerConfig: AppRouter.createRouter(),
+      child: Consumer<AuthProvider>(
+        builder: (context, authProvider, child) {
+          return MaterialApp.router(
+            title: 'SkillShare',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: ThemeMode.system,
+            routerConfig: AppRouter.createRouter(authProvider),
+          );
+        },
       ),
     );
   }
 }
-

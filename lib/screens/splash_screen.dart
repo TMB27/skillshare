@@ -69,7 +69,7 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> _checkOnboardingStatus() async {
     final prefs = await SharedPreferences.getInstance();
     final onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
-    
+
     if (mounted) {
       if (onboardingCompleted) {
         context.go('/auth');
@@ -135,9 +135,9 @@ class _SplashScreenState extends State<SplashScreen>
                   );
                 },
               ),
-              
+
               const SizedBox(height: 32),
-              
+
               // App Name Animation
               AnimatedBuilder(
                 animation: _fadeAnimation,
@@ -156,9 +156,9 @@ class _SplashScreenState extends State<SplashScreen>
                   );
                 },
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Tagline Animation
               AnimatedBuilder(
                 animation: _fadeAnimation,
@@ -176,9 +176,9 @@ class _SplashScreenState extends State<SplashScreen>
                   );
                 },
               ),
-              
+
               const SizedBox(height: 80),
-              
+
               // Loading Indicator
               AnimatedBuilder(
                 animation: _fadeAnimation,
@@ -203,4 +203,3 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 }
-

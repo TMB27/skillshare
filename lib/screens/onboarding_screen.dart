@@ -19,19 +19,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       icon: Icons.search_rounded,
       iconColor: AppTheme.primaryTeal,
       title: 'Discover Skills',
-      description: 'Find amazing skills and talented people in your community. From cooking to coding, music to marketing.',
+      description:
+          'Find amazing skills and talented people in your community. From cooking to coding, music to marketing.',
     ),
     OnboardingPage(
       icon: Icons.school_rounded,
       iconColor: AppTheme.secondaryBlue,
       title: 'Share Knowledge',
-      description: 'Teach what you know and earn while helping others grow. Turn your expertise into opportunity.',
+      description:
+          'Teach what you know and earn while helping others grow. Turn your expertise into opportunity.',
     ),
     OnboardingPage(
       icon: Icons.people_rounded,
       iconColor: AppTheme.successGreen,
       title: 'Build Community',
-      description: 'Connect with like-minded learners and teachers. Build lasting relationships through shared learning.',
+      description:
+          'Connect with like-minded learners and teachers. Build lasting relationships through shared learning.',
     ),
   ];
 
@@ -69,7 +72,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     // Mark onboarding as completed
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_completed', true);
-    
+
     if (mounted) {
       context.go('/auth');
     }
@@ -157,10 +160,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         horizontal: 32,
                         vertical: 12,
                       ),
-                      minimumSize: const Size(120, 48), // Override the infinite width
+                      minimumSize: const Size(120, 48), 
                     ),
                     child: Text(
-                      _currentPage == _pages.length - 1 ? 'Get Started' : 'Next',
+                      _currentPage == _pages.length - 1
+                          ? 'Get Started'
+                          : 'Next',
                     ),
                   ),
                 ],
@@ -229,9 +234,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       width: _currentPage == index ? 24 : 8,
       height: 8,
       decoration: BoxDecoration(
-        color: _currentPage == index
-            ? AppTheme.primaryTeal
-            : AppTheme.dividerGray,
+        color:
+            _currentPage == index ? AppTheme.primaryTeal : AppTheme.dividerGray,
         borderRadius: BorderRadius.circular(4),
       ),
     );
@@ -251,4 +255,3 @@ class OnboardingPage {
     required this.description,
   });
 }
-

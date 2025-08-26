@@ -41,7 +41,7 @@ class _SkillDetailScreenState extends State<SkillDetailScreen> {
     try {
       final skillsProvider = context.read<SkillsProvider>();
       final skill = await skillsProvider.getSkillById(widget.skillId);
-      
+
       if (skill != null) {
         setState(() {
           _skill = skill;
@@ -93,7 +93,7 @@ class _SkillDetailScreenState extends State<SkillDetailScreen> {
 
   void _bookSkill() {
     if (_skill == null) return;
-    
+
     // TODO: Navigate to booking screen
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -104,7 +104,7 @@ class _SkillDetailScreenState extends State<SkillDetailScreen> {
 
   void _contactTeacher() {
     if (_skill == null) return;
-    
+
     // TODO: Navigate to chat screen
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -221,7 +221,8 @@ class _SkillDetailScreenState extends State<SkillDetailScreen> {
                       CircleAvatar(
                         radius: 20,
                         backgroundImage: _skill!.teacherAvatarUrl != null
-                            ? CachedNetworkImageProvider(_skill!.teacherAvatarUrl!)
+                            ? CachedNetworkImageProvider(
+                                _skill!.teacherAvatarUrl!)
                             : null,
                         child: _skill!.teacherAvatarUrl == null
                             ? const Icon(Icons.person)
@@ -267,7 +268,7 @@ class _SkillDetailScreenState extends State<SkillDetailScreen> {
                   _buildDetailRow('Experience Level', _skill!.experienceLevel),
                   _buildDetailRow('Skill Type', _skill!.skillType),
                   _buildDetailRow('Duration', '${_skill!.duration} minutes'),
-                    _buildDetailRow('Location', _skill!.location),
+                  _buildDetailRow('Location', _skill!.location),
                   const SizedBox(height: 16),
 
                   // Description
@@ -286,13 +287,14 @@ class _SkillDetailScreenState extends State<SkillDetailScreen> {
                   const SizedBox(height: 16),
 
                   // Requirements
-                  if (_skill!.requirements != null && _skill!.requirements!.isNotEmpty) ...[
+                  if (_skill!.requirements != null &&
+                      _skill!.requirements!.isNotEmpty) ...[
                     Text(
                       'Requirements',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 8),
-                                        Text(
+                    Text(
                       _skill!.requirements!,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
@@ -309,10 +311,13 @@ class _SkillDetailScreenState extends State<SkillDetailScreen> {
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: _skill!.tags!.map((tag) => Chip(
-                        label: Text(tag),
-                        backgroundColor: AppTheme.primaryTeal.withOpacity(0.1),
-                      )).toList(),
+                      children: _skill!.tags!
+                          .map((tag) => Chip(
+                                label: Text(tag),
+                                backgroundColor:
+                                    AppTheme.primaryTeal.withOpacity(0.1),
+                              ))
+                          .toList(),
                     ),
                     const SizedBox(height: 100), // Space for bottom buttons
                   ],
@@ -387,4 +392,3 @@ class _SkillDetailScreenState extends State<SkillDetailScreen> {
     );
   }
 }
-

@@ -94,9 +94,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           authProvider.currentUser!.id,
         );
         setState(() {
-          _notifications = _notifications
-              .map((n) => n.copyWith(isRead: true))
-              .toList();
+          _notifications =
+              _notifications.map((n) => n.copyWith(isRead: true)).toList();
         });
       }
     } catch (e) {
@@ -289,14 +288,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         _deleteNotification(notification.id);
       },
       child: Container(
-        color: notification.isRead ? null : AppTheme.primaryTeal.withOpacity(0.05),
+        color:
+            notification.isRead ? null : AppTheme.primaryTeal.withOpacity(0.05),
         child: ListTile(
           leading: Stack(
             children: [
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: _getNotificationColor(notification.type).withOpacity(0.1),
+                  color:
+                      _getNotificationColor(notification.type).withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -323,7 +324,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           title: Text(
             notification.title,
             style: TextStyle(
-              fontWeight: notification.isRead ? FontWeight.normal : FontWeight.bold,
+              fontWeight:
+                  notification.isRead ? FontWeight.normal : FontWeight.bold,
             ),
           ),
           subtitle: Column(
@@ -332,7 +334,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               Text(
                 notification.message,
                 style: TextStyle(
-                  color: notification.isRead ? AppTheme.textSecondary : AppTheme.textPrimary,
+                  color: notification.isRead
+                      ? AppTheme.textSecondary
+                      : AppTheme.textPrimary,
                 ),
               ),
               const SizedBox(height: 4),
@@ -355,7 +359,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             if (!notification.isRead) {
               _markAsRead(notification.id);
             }
-            
+
             // Handle notification tap based on type
             if (notification.data != null) {
               final data = notification.data!;
@@ -383,4 +387,3 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 }
-

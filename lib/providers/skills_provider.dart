@@ -9,7 +9,7 @@ class SkillsProvider extends ChangeNotifier {
   List<SkillWithUser> _favoriteSkills = [];
   bool _isLoading = false;
   String? _errorMessage;
-  
+
   // Filter properties
   String? _selectedCategory;
   String? _searchQuery;
@@ -26,7 +26,7 @@ class SkillsProvider extends ChangeNotifier {
   List<SkillWithUser> get favoriteSkills => _favoriteSkills;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
-  
+
   // Filter getters
   String? get selectedCategory => _selectedCategory;
   String? get searchQuery => _searchQuery;
@@ -36,7 +36,7 @@ class SkillsProvider extends ChangeNotifier {
   String? get selectedExperienceLevel => _selectedExperienceLevel;
   String? get selectedSkillType => _selectedSkillType;
 
-  bool get hasActiveFilters => 
+  bool get hasActiveFilters =>
       _selectedCategory != null ||
       _searchQuery != null ||
       _selectedLocation != null ||
@@ -47,7 +47,7 @@ class SkillsProvider extends ChangeNotifier {
 
   Future<void> loadSkills({bool refresh = false}) async {
     if (_isLoading && !refresh) return;
-    
+
     _setLoading(true);
     _clearError();
 
@@ -115,10 +115,10 @@ class SkillsProvider extends ChangeNotifier {
           orElse: () => throw StateError('Skill not found'),
         ),
       );
-      
+
       // Increment view count
       await SupabaseService.incrementSkillViews(skillId);
-      
+
       return existingSkill;
     } catch (e) {
       // If not found in local lists, fetch from server
@@ -191,8 +191,9 @@ class SkillsProvider extends ChangeNotifier {
 
   Future<bool> toggleFavorite(String userId, String skillId) async {
     try {
-      final isFavorited = await SupabaseService.isSkillFavorited(userId, skillId);
-      
+      final isFavorited =
+          await SupabaseService.isSkillFavorited(userId, skillId);
+
       if (isFavorited) {
         await SupabaseService.removeFromFavorites(userId, skillId);
         _favoriteSkills.removeWhere((skill) => skill.id == skillId);
@@ -201,7 +202,7 @@ class SkillsProvider extends ChangeNotifier {
         // Optionally reload favorites to get the updated list
         await loadFavoriteSkills(userId);
       }
-      
+
       notifyListeners();
       return true;
     } catch (e) {
@@ -296,4 +297,3 @@ class SkillsProvider extends ChangeNotifier {
     _clearError();
   }
 }
-

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../screens/splash_screen.dart';
 import '../screens/onboarding_screen.dart';
 import '../screens/auth_screen.dart';
+import '../screens/forgot_password_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/browse_skills_screen.dart';
 import '../screens/skill_detail_screen.dart';
@@ -24,12 +24,13 @@ class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
   static final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
-  static GoRouter createRouter() {
+  static GoRouter createRouter(AuthProvider authProvider) {
     return GoRouter(
       navigatorKey: _rootNavigatorKey,
       initialLocation: '/splash',
+      refreshListenable:
+          authProvider, // This will refresh routes when AuthProvider changes
       redirect: (context, state) {
-        final authProvider = context.read<AuthProvider>();
         final isAuthenticated = authProvider.isAuthenticated;
         final isInitialized = authProvider.isInitialized;
 
@@ -70,6 +71,13 @@ class AppRouter {
           path: '/auth',
           name: 'auth',
           builder: (context, state) => const AuthScreen(),
+        ),
+
+        // Forgot Password Screen
+        GoRoute(
+          path: '/forgot-password',
+          name: 'forgotPassword',
+          builder: (context, state) => const ForgotPasswordScreen(),
         ),
 
         // Main App Shell with Bottom Navigation
@@ -207,12 +215,17 @@ class AppRouter {
   }
 
   static bool _isPublicRoute(String location) {
-    const publicRoutes = ['/splash', '/onboarding', '/auth'];
+    const publicRoutes = [
+      '/splash',
+      '/onboarding',
+      '/auth',
+      '/forgot-password'
+    ];
     return publicRoutes.contains(location);
   }
 
   static bool _isAuthRoute(String location) {
-    const authRoutes = ['/splash', '/onboarding', '/auth'];
+    const authRoutes = ['/splash', '/onboarding', '/auth', '/forgot-password'];
     return authRoutes.contains(location);
   }
 }
@@ -263,7 +276,8 @@ class _MainShellState extends State<MainShell> {
       _currentIndex = 1;
     } else if (location.startsWith('/messages')) {
       _currentIndex = 2;
-    } else if (location.startsWith('/bookings')) { // Added bookings tab
+    } else if (location.startsWith('/bookings')) {
+      // Added bookings tab
       _currentIndex = 3;
     } else if (location.startsWith('/profile')) {
       _currentIndex = 4;
@@ -306,4 +320,3 @@ class _MainShellState extends State<MainShell> {
     );
   }
 }
-

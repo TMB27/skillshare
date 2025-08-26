@@ -10,7 +10,7 @@ import '../models/notification_model.dart';
 
 class SupabaseService {
   static SupabaseClient? _client;
-  
+
   static SupabaseClient get client {
     if (_client == null) {
       throw Exception('Supabase not initialized. Call initialize() first.');
@@ -72,12 +72,9 @@ class SupabaseService {
 
   // User Profile Methods
   static Future<UserProfile?> getUserProfile(String userId) async {
-    final response = await client
-        .from('profiles')
-        .select()
-        .eq('id', userId)
-        .single();
-    
+    final response =
+        await client.from('profiles').select().eq('id', userId).single();
+
     return UserProfile.fromJson(response);
   }
 
@@ -88,7 +85,7 @@ class SupabaseService {
         .eq('id', profile.id)
         .select()
         .single();
-    
+
     return UserProfile.fromJson(response);
   }
 
@@ -96,11 +93,11 @@ class SupabaseService {
     try {
       final file = File(filePath);
       final bytes = await file.readAsBytes();
-      
+
       await client.storage
           .from('avatars')
           .uploadBinary('$userId/avatar.jpg', bytes);
-      
+
       return client.storage.from('avatars').getPublicUrl('$userId/avatar.jpg');
     } catch (e) {
       return null;
@@ -119,9 +116,7 @@ class SupabaseService {
     int limit = 20,
     int offset = 0,
   }) async {
-    PostgrestFilterBuilder query = client
-        .from('skills')
-        .select('''
+    PostgrestFilterBuilder query = client.from('skills').select('''
           *,
           profiles!skills_user_id_fkey(
             id,
@@ -132,15 +127,15 @@ class SupabaseService {
             rating,
             total_reviews
           )
-        ''')
-        .eq('is_active', true);
+        ''').eq('is_active', true);
 
     if (category != null) {
       query = query.eq('category', category);
     }
 
     if (searchQuery != null && searchQuery.isNotEmpty) {
-      query = query.or('title.ilike.%$searchQuery%,description.ilike.%$searchQuery%');
+      query = query
+          .or('title.ilike.%$searchQuery%,description.ilike.%$searchQuery%');
     }
 
     if (location != null) {
@@ -166,8 +161,10 @@ class SupabaseService {
     final response = await query
         .order('created_at', ascending: false)
         .range(offset, offset + limit - 1);
-        
-    return response.map<SkillWithUser>((json) => SkillWithUser.fromJson(json)).toList();
+
+    return response
+        .map<SkillWithUser>((json) => SkillWithUser.fromJson(json))
+        .toList();
   }
 
   static Future<SkillWithUser?> getSkillById(String skillId) async {
@@ -176,17 +173,14 @@ class SupabaseService {
         .select()
         .eq('id', skillId)
         .single();
-    
+
     return SkillWithUser.fromJson(response);
   }
 
   static Future<Skill> createSkill(Skill skill) async {
-    final response = await client
-        .from('skills')
-        .insert(skill.toJson())
-        .select()
-        .single();
-    
+    final response =
+        await client.from('skills').insert(skill.toJson()).select().single();
+
     return Skill.fromJson(response);
   }
 
@@ -197,15 +191,12 @@ class SupabaseService {
         .eq('id', skill.id)
         .select()
         .single();
-    
+
     return Skill.fromJson(response);
   }
 
   static Future<void> deleteSkill(String skillId) async {
-    await client
-        .from('skills')
-        .delete()
-        .eq('id', skillId);
+    await client.from('skills').delete().eq('id', skillId);
   }
 
   static Future<List<Skill>> getUserSkills(String userId) async {
@@ -214,20 +205,19 @@ class SupabaseService {
         .select()
         .eq('user_id', userId)
         .order('created_at', ascending: false);
-    
+
     return response.map<Skill>((json) => Skill.fromJson(json)).toList();
   }
 
-  static Future<String?> uploadSkillImage(String skillId, String filePath) async {
+  static Future<String?> uploadSkillImage(
+      String skillId, String filePath) async {
     try {
       final file = File(filePath);
       final bytes = await file.readAsBytes();
       final fileName = '$skillId/${DateTime.now().millisecondsSinceEpoch}.jpg';
-      
-      await client.storage
-          .from('skill_images')
-          .uploadBinary(fileName, bytes);
-      
+
+      await client.storage.from('skill_images').uploadBinary(fileName, bytes);
+
       return client.storage.from('skill_images').getPublicUrl(fileName);
     } catch (e) {
       return null;
@@ -241,7 +231,7 @@ class SupabaseService {
         .insert(booking.toJson())
         .select()
         .single();
-    
+
     return Booking.fromJson(response);
   }
 
@@ -251,8 +241,10 @@ class SupabaseService {
         .select()
         .or('student_id.eq.$userId,teacher_id.eq.$userId')
         .order('scheduled_date', ascending: false);
-    
-    return response.map<BookingWithDetails>((json) => BookingWithDetails.fromJson(json)).toList();
+
+    return response
+        .map<BookingWithDetails>((json) => BookingWithDetails.fromJson(json))
+        .toList();
   }
 
   static Future<Booking> updateBooking(Booking booking) async {
@@ -262,45 +254,37 @@ class SupabaseService {
         .eq('id', booking.id)
         .select()
         .single();
-    
+
     return Booking.fromJson(response);
   }
 
   static Future<void> cancelBooking(String bookingId, String reason) async {
-    await client
-        .from('bookings')
-        .update({
-          'status': 'cancelled',
-          'cancellation_reason': reason,
-          'cancelled_at': DateTime.now().toIso8601String(),
-          'cancelled_by': currentUserId,
-        })
-        .eq('id', bookingId);
+    await client.from('bookings').update({
+      'status': 'cancelled',
+      'cancellation_reason': reason,
+      'cancelled_at': DateTime.now().toIso8601String(),
+      'cancelled_by': currentUserId,
+    }).eq('id', bookingId);
   }
 
   // Additional booking methods
   static Future<Booking?> getBookingById(String bookingId) async {
     try {
-      final response = await client
-          .from('bookings')
-          .select()
-          .eq('id', bookingId)
-          .single();
-      
+      final response =
+          await client.from('bookings').select().eq('id', bookingId).single();
+
       return Booking.fromJson(response);
     } catch (e) {
       return null;
     }
   }
 
-  static Future<void> updateBookingStatus(String bookingId, String status) async {
-    await client
-        .from('bookings')
-        .update({
-          'status': status,
-          'updated_at': DateTime.now().toIso8601String(),
-        })
-        .eq('id', bookingId);
+  static Future<void> updateBookingStatus(
+      String bookingId, String status) async {
+    await client.from('bookings').update({
+      'status': status,
+      'updated_at': DateTime.now().toIso8601String(),
+    }).eq('id', bookingId);
   }
 
   static Future<List<Booking>> getBookingsAsStudent(String studentId) async {
@@ -309,7 +293,7 @@ class SupabaseService {
         .select()
         .eq('learner_id', studentId)
         .order('scheduled_date', ascending: false);
-    
+
     return response.map<Booking>((json) => Booking.fromJson(json)).toList();
   }
 
@@ -319,30 +303,35 @@ class SupabaseService {
         .select()
         .eq('teacher_id', teacherId)
         .order('scheduled_date', ascending: false);
-    
+
     return response.map<Booking>((json) => Booking.fromJson(json)).toList();
   }
 
   // Messages Methods
-  static Future<List<ConversationWithUser>> getConversations(String userId) async {
+  static Future<List<ConversationWithUser>> getConversations(
+      String userId) async {
     final response = await client
         .from('conversations_with_users')
         .select()
         .or('participant1_id.eq.$userId,participant2_id.eq.$userId')
         .eq('is_active', true)
         .order('last_message_at', ascending: false);
-    
-    return response.map<ConversationWithUser>((json) => ConversationWithUser.fromJson(json)).toList();
+
+    return response
+        .map<ConversationWithUser>(
+            (json) => ConversationWithUser.fromJson(json))
+        .toList();
   }
 
-  static Future<List<Message>> getMessages(String conversationId, {int limit = 50}) async {
+  static Future<List<Message>> getMessages(String conversationId,
+      {int limit = 50}) async {
     final response = await client
         .from('messages')
         .select()
         .eq('conversation_id', conversationId)
         .order('created_at', ascending: false)
         .limit(limit);
-    
+
     return response.map<Message>((json) => Message.fromJson(json)).toList();
   }
 
@@ -352,18 +341,15 @@ class SupabaseService {
         .insert(message.toJson())
         .select()
         .single();
-    
+
     return Message.fromJson(response);
   }
 
   static Future<void> markMessageAsRead(String messageId) async {
-    await client
-        .from('messages')
-        .update({
-          'is_read': true,
-          'read_at': DateTime.now().toIso8601String(),
-        })
-        .eq('id', messageId);
+    await client.from('messages').update({
+      'is_read': true,
+      'read_at': DateTime.now().toIso8601String(),
+    }).eq('id', messageId);
   }
 
   static Stream<List<Message>> subscribeToMessages(String conversationId) {
@@ -372,7 +358,8 @@ class SupabaseService {
         .stream(primaryKey: ['id'])
         .eq('conversation_id', conversationId)
         .order('created_at')
-        .map((data) => data.map<Message>((json) => Message.fromJson(json)).toList());
+        .map((data) =>
+            data.map<Message>((json) => Message.fromJson(json)).toList());
   }
 
   // Reviews Methods
@@ -383,24 +370,23 @@ class SupabaseService {
         .eq('skill_id', skillId)
         .eq('is_public', true)
         .order('created_at', ascending: false);
-    
-    return response.map<ReviewWithUser>((json) => ReviewWithUser.fromJson(json)).toList();
+
+    return response
+        .map<ReviewWithUser>((json) => ReviewWithUser.fromJson(json))
+        .toList();
   }
 
   static Future<Review> createReview(Review review) async {
-    final response = await client
-        .from('reviews')
-        .insert(review.toJson())
-        .select()
-        .single();
-    
+    final response =
+        await client.from('reviews').insert(review.toJson()).select().single();
+
     return Review.fromJson(response);
   }
 
   static Future<ReviewSummary?> getReviewSummary(String skillId) async {
     final response = await client
         .rpc('get_review_summary', params: {'skill_id_param': skillId});
-    
+
     if (response != null) {
       return ReviewSummary.fromJson(response);
     }
@@ -415,18 +401,17 @@ class SupabaseService {
         .eq('user_id', userId)
         .order('created_at', ascending: false)
         .limit(50);
-    
-    return response.map<AppNotification>((json) => AppNotification.fromJson(json)).toList();
+
+    return response
+        .map<AppNotification>((json) => AppNotification.fromJson(json))
+        .toList();
   }
 
   static Future<void> markNotificationAsRead(String notificationId) async {
-    await client
-        .from('notifications')
-        .update({
-          'is_read': true,
-          'read_at': DateTime.now().toIso8601String(),
-        })
-        .eq('id', notificationId);
+    await client.from('notifications').update({
+      'is_read': true,
+      'read_at': DateTime.now().toIso8601String(),
+    }).eq('id', notificationId);
   }
 
   static Future<void> markAllNotificationsAsRead(String userId) async {
@@ -441,10 +426,7 @@ class SupabaseService {
   }
 
   static Future<void> deleteNotification(String notificationId) async {
-    await client
-        .from('notifications')
-        .delete()
-        .eq('id', notificationId);
+    await client.from('notifications').delete().eq('id', notificationId);
   }
 
   static Future<int> getUnreadNotificationCount(String userId) async {
@@ -453,18 +435,16 @@ class SupabaseService {
         .select('id')
         .eq('user_id', userId)
         .eq('is_read', false);
-    
+
     return response.length;
   }
 
   // Favorites Methods
   static Future<void> addToFavorites(String userId, String skillId) async {
-    await client
-        .from('favorites')
-        .insert({
-          'user_id': userId,
-          'skill_id': skillId,
-        });
+    await client.from('favorites').insert({
+      'user_id': userId,
+      'skill_id': skillId,
+    });
   }
 
   static Future<void> removeFromFavorites(String userId, String skillId) async {
@@ -480,8 +460,11 @@ class SupabaseService {
         .from('favorites')
         .select('skills_with_users(*)')
         .eq('user_id', userId);
-    
-    return response.map<SkillWithUser>((json) => SkillWithUser.fromJson(json['skills_with_users'])).toList();
+
+    return response
+        .map<SkillWithUser>(
+            (json) => SkillWithUser.fromJson(json['skills_with_users']))
+        .toList();
   }
 
   static Future<bool> isSkillFavorited(String userId, String skillId) async {
@@ -491,7 +474,7 @@ class SupabaseService {
         .eq('user_id', userId)
         .eq('skill_id', skillId)
         .maybeSingle();
-    
+
     return response != null;
   }
 
@@ -502,18 +485,19 @@ class SupabaseService {
         .select()
         .eq('is_active', true)
         .order('name');
-    
+
     return response;
   }
 
-  static Future<List<Map<String, dynamic>>> getSubcategories(String categoryId) async {
+  static Future<List<Map<String, dynamic>>> getSubcategories(
+      String categoryId) async {
     final response = await client
         .from('subcategories')
         .select()
         .eq('category_id', categoryId)
         .eq('is_active', true)
         .order('name');
-    
+
     return response;
   }
 
@@ -537,8 +521,10 @@ class SupabaseService {
         .eq('is_active', true)
         .order('rating', ascending: false)
         .limit(20);
-    
-    return response.map<SkillWithUser>((json) => SkillWithUser.fromJson(json)).toList();
+
+    return response
+        .map<SkillWithUser>((json) => SkillWithUser.fromJson(json))
+        .toList();
   }
 
   static Future<List<UserProfile>> searchUsers(String query) async {
@@ -549,15 +535,17 @@ class SupabaseService {
         .eq('is_active', true)
         .order('rating', ascending: false)
         .limit(20);
-    
-    return response.map<UserProfile>((json) => UserProfile.fromJson(json)).toList();
+
+    return response
+        .map<UserProfile>((json) => UserProfile.fromJson(json))
+        .toList();
   }
 
   // Analytics Methods
   static Future<Map<String, dynamic>> getDashboardStats(String userId) async {
     final response = await client
         .rpc('get_user_dashboard_stats', params: {'user_id_param': userId});
-    
+
     return response ?? {};
   }
 
@@ -573,16 +561,21 @@ class SupabaseService {
         .stream(primaryKey: ['id'])
         .eq('user_id', userId)
         .order('created_at', ascending: false)
-        .map((data) => data.map<AppNotification>((json) => AppNotification.fromJson(json)).toList());
+        .map((data) => data
+            .map<AppNotification>((json) => AppNotification.fromJson(json))
+            .toList());
   }
 
-  static Stream<List<ConversationWithUser>> subscribeToConversations(String userId) {
+  static Stream<List<ConversationWithUser>> subscribeToConversations(
+      String userId) {
     return client
         .from('conversations_with_users')
         .stream(primaryKey: ['id'])
         .eq('participant1_id', userId)
         .order('last_message_at', ascending: false)
-        .map((data) => data.map<ConversationWithUser>((json) => ConversationWithUser.fromJson(json)).toList());
+        .map((data) => data
+            .map<ConversationWithUser>(
+                (json) => ConversationWithUser.fromJson(json))
+            .toList());
   }
 }
-

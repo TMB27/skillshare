@@ -129,9 +129,8 @@ class Skill {
       address: json['address'] as String?,
       latitude: (json['latitude'] as num?)?.toDouble(),
       longitude: (json['longitude'] as num?)?.toDouble(),
-      tags: json['tags'] != null
-          ? List<String>.from(json['tags'] as List)
-          : null,
+      tags:
+          json['tags'] != null ? List<String>.from(json['tags'] as List) : null,
       requirements: json['requirements'] as String?,
       whatYouLearn: json['what_you_learn'] as String?,
       materialsProvided: json['materials_provided'] as String?,
@@ -354,9 +353,8 @@ class SkillWithUser extends Skill {
       address: json['address'] as String?,
       latitude: (json['latitude'] as num?)?.toDouble(),
       longitude: (json['longitude'] as num?)?.toDouble(),
-      tags: json['tags'] != null
-          ? List<String>.from(json['tags'] as List)
-          : null,
+      tags:
+          json['tags'] != null ? List<String>.from(json['tags'] as List) : null,
       requirements: json['requirements'] as String?,
       whatYouLearn: json['what_you_learn'] as String?,
       materialsProvided: json['materials_provided'] as String?,
@@ -385,4 +383,3 @@ class SkillWithUser extends Skill {
     );
   }
 }
-

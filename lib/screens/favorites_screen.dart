@@ -20,7 +20,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final authProvider = context.read<AuthProvider>();
       if (authProvider.currentUser != null) {
-        context.read<SkillsProvider>().loadFavoriteSkills(authProvider.currentUser!.id);
+        context
+            .read<SkillsProvider>()
+            .loadFavoriteSkills(authProvider.currentUser!.id);
       }
     });
   }
@@ -108,7 +110,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   Widget _buildFavoritesList() {
     final skillsProvider = context.watch<SkillsProvider>();
-    
+
     return CustomScrollView(
       slivers: [
         // Header with count
@@ -189,4 +191,3 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 }
-

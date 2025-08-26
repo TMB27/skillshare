@@ -137,7 +137,8 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
     }
 
     final isTeacher = _booking!.teacherId == currentUserId;
-    final canCancel = _booking!.status == 'pending' || _booking!.status == 'confirmed';
+    final canCancel =
+        _booking!.status == 'pending' || _booking!.status == 'confirmed';
     final canConfirm = _booking!.status == 'pending' && isTeacher;
     final canComplete = _booking!.status == 'confirmed' && isTeacher;
 
@@ -243,7 +244,8 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                     ListTile(
                       leading: CircleAvatar(
                         backgroundImage: _booking!.teacherAvatarUrl != null
-                            ? CachedNetworkImageProvider(_booking!.teacherAvatarUrl!)
+                            ? CachedNetworkImageProvider(
+                                _booking!.teacherAvatarUrl!)
                             : null,
                         child: _booking!.teacherAvatarUrl == null
                             ? const Icon(Icons.person)
@@ -262,7 +264,8 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                     ListTile(
                       leading: CircleAvatar(
                         backgroundImage: _booking!.studentAvatarUrl != null
-                            ? CachedNetworkImageProvider(_booking!.studentAvatarUrl!)
+                            ? CachedNetworkImageProvider(
+                                _booking!.studentAvatarUrl!)
                             : null,
                         child: _booking!.studentAvatarUrl == null
                             ? const Icon(Icons.person)
@@ -295,9 +298,11 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                 child: Column(
                   children: [
                     _buildDetailRow('Date', _booking!.bookingDate),
-                                        _buildDetailRow('Time', _booking!.bookingTime),
-                    _buildDetailRow('Duration', '${_booking!.duration} minutes'),
-                    _buildDetailRow('Price', '\$${_booking!.totalAmount?.toStringAsFixed(2) ?? '0.00'}'),
+                    _buildDetailRow('Time', _booking!.bookingTime),
+                    _buildDetailRow(
+                        'Duration', '${_booking!.duration} minutes'),
+                    _buildDetailRow('Price',
+                        '\$${_booking!.totalAmount?.toStringAsFixed(2) ?? '0.00'}'),
                     _buildDetailRow('Location', _booking!.location!),
                     if (_booking!.notes != null && _booking!.notes!.isNotEmpty)
                       _buildDetailRow('Notes', _booking!.notes!),
@@ -438,4 +443,3 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
     }
   }
 }
-

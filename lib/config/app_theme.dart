@@ -5,19 +5,19 @@ class AppTheme {
   static const Color primaryTeal = Color(0xFF26A69A);
   static const Color primaryDark = Color(0xFF00695C);
   static const Color primaryLight = Color(0xFF80CBC4);
-  
+
   // Secondary Colors
   static const Color secondaryBlue = Color(0xFF2196F3);
   static const Color secondaryPurple = Color(0xFF9C27B0);
   static const Color secondaryOrange = Color(0xFFFF9800);
-  
+
   // Neutral Colors
   static const Color backgroundWhite = Color(0xFFFFFFFF);
   static const Color surfaceGray = Color(0xFFF5F5F5);
   static const Color textPrimary = Color(0xFF212121);
   static const Color textSecondary = Color(0xFF757575);
   static const Color dividerGray = Color(0xFFE0E0E0);
-  
+
   // Status Colors
   static const Color successGreen = Color(0xFF4CAF50);
   static const Color warningOrange = Color(0xFFFF9800);
@@ -82,7 +82,8 @@ class AppTheme {
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: errorRed),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
       cardTheme: CardThemeData(
         elevation: 2,
@@ -156,4 +157,3 @@ class AppTheme {
     );
   }
 }
-

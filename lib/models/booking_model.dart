@@ -23,7 +23,7 @@ class Booking {
   final String? cancelledBy;
   final DateTime createdAt;
   final DateTime updatedAt;
-  
+
   // Additional fields for UI display
   final String? skillTitle;
   final String? skillDescription;
@@ -93,16 +93,17 @@ class Booking {
 
   bool get canBeCancelled {
     return ['pending', 'confirmed'].contains(status.toLowerCase()) &&
-           scheduledDate.isAfter(DateTime.now().add(const Duration(hours: 24)));
+        scheduledDate.isAfter(DateTime.now().add(const Duration(hours: 24)));
   }
 
   bool get canBeRescheduled {
     return ['pending', 'confirmed'].contains(status.toLowerCase()) &&
-           scheduledDate.isAfter(DateTime.now().add(const Duration(hours: 2)));
+        scheduledDate.isAfter(DateTime.now().add(const Duration(hours: 2)));
   }
 
   // Additional getters for UI compatibility
-  String get bookingDate => '${scheduledDate.day}/${scheduledDate.month}/${scheduledDate.year}';
+  String get bookingDate =>
+      '${scheduledDate.day}/${scheduledDate.month}/${scheduledDate.year}';
   String get bookingTime => timeSlot;
 
   factory Booking.fromJson(Map<String, dynamic> json) {
@@ -302,4 +303,3 @@ class BookingWithDetails extends Booking {
     );
   }
 }
-

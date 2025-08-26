@@ -52,7 +52,7 @@ class UserProfile {
   });
 
   String get fullName => '$firstName $lastName';
-  
+
   // Additional getter for compatibility
   int get reviewCount => totalReviews;
 
@@ -67,7 +67,7 @@ class UserProfile {
       location: json['location'] as String?,
       bio: json['bio'] as String?,
       avatarUrl: json['avatar_url'] as String?,
-      dateOfBirth: json['date_of_birth'] != null 
+      dateOfBirth: json['date_of_birth'] != null
           ? DateTime.parse(json['date_of_birth'] as String)
           : null,
       gender: json['gender'] as String?,
@@ -77,13 +77,14 @@ class UserProfile {
           ? List<String>.from(json['languages_spoken'] as List)
           : null,
       socialLinks: json['social_links'] as Map<String, dynamic>?,
-      verificationStatus: json['verification_status'] as String? ?? 'unverified',
+      verificationStatus:
+          json['verification_status'] as String? ?? 'unverified',
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
       totalReviews: json['total_reviews'] as int? ?? 0,
       skillsTaught: json['skills_taught'] as int? ?? 0,
       skillsLearned: json['skills_learned'] as int? ?? 0,
       isActive: json['is_active'] as bool? ?? true,
-      lastSeen: json['last_seen'] != null 
+      lastSeen: json['last_seen'] != null
           ? DateTime.parse(json['last_seen'] as String)
           : null,
       createdAt: DateTime.parse(json['created_at'] as String),
@@ -172,4 +173,3 @@ class UserProfile {
     );
   }
 }
-

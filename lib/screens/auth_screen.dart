@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import '../config/app_theme.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/loading_overlay.dart';
@@ -66,7 +67,8 @@ class _AuthScreenState extends State<AuthScreen>
     );
 
     if (success && mounted) {
-      // Navigation will be handled by the router redirect
+      // Navigation will be handled by the router redirect automatically
+      _showSuccessSnackBar('Welcome back! Redirecting to home...');
     } else if (mounted) {
       _showErrorSnackBar(authProvider.errorMessage ?? 'Login failed');
     }
@@ -92,7 +94,8 @@ class _AuthScreenState extends State<AuthScreen>
     );
 
     if (success && mounted) {
-      _showSuccessSnackBar('Account created successfully! Please check your email to verify your account.');
+      _showSuccessSnackBar(
+          'Account created successfully! Please check your email to verify your account.');
     } else if (mounted) {
       _showErrorSnackBar(authProvider.errorMessage ?? 'Signup failed');
     }
@@ -180,6 +183,7 @@ class _AuthScreenState extends State<AuthScreen>
                         color: AppTheme.primaryTeal,
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      indicatorSize: TabBarIndicatorSize.tab,
                       labelColor: Colors.white,
                       unselectedLabelColor: AppTheme.textSecondary,
                       tabs: const [
@@ -230,7 +234,8 @@ class _AuthScreenState extends State<AuthScreen>
                 if (value == null || value.isEmpty) {
                   return 'Please enter your email';
                 }
-                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                    .hasMatch(value)) {
                   return 'Please enter a valid email';
                 }
                 return null;
@@ -248,7 +253,9 @@ class _AuthScreenState extends State<AuthScreen>
                 prefixIcon: const Icon(Icons.lock_outlined),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _obscureLoginPassword ? Icons.visibility : Icons.visibility_off,
+                    _obscureLoginPassword
+                        ? Icons.visibility
+                        : Icons.visibility_off,
                   ),
                   onPressed: () {
                     setState(() {
@@ -272,7 +279,7 @@ class _AuthScreenState extends State<AuthScreen>
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {
-                  // TODO: Implement forgot password
+                  context.push('/forgot-password');
                 },
                 child: const Text('Forgot Password?'),
               ),
@@ -371,7 +378,8 @@ class _AuthScreenState extends State<AuthScreen>
                 if (value == null || value.isEmpty) {
                   return 'Please enter your email';
                 }
-                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                    .hasMatch(value)) {
                   return 'Please enter a valid email';
                 }
                 return null;
@@ -400,7 +408,9 @@ class _AuthScreenState extends State<AuthScreen>
                 prefixIcon: const Icon(Icons.lock_outlined),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _obscureSignupPassword ? Icons.visibility : Icons.visibility_off,
+                    _obscureSignupPassword
+                        ? Icons.visibility
+                        : Icons.visibility_off,
                   ),
                   onPressed: () {
                     setState(() {
@@ -431,7 +441,9 @@ class _AuthScreenState extends State<AuthScreen>
                 prefixIcon: const Icon(Icons.lock_outlined),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                    _obscureConfirmPassword
+                        ? Icons.visibility
+                        : Icons.visibility_off,
                   ),
                   onPressed: () {
                     setState(() {
@@ -486,4 +498,3 @@ class _AuthScreenState extends State<AuthScreen>
     );
   }
 }
-

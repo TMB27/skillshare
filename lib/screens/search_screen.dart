@@ -19,7 +19,7 @@ class _SearchScreenState extends State<SearchScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
-  
+
   List<SkillWithUser> _skillResults = [];
   List<UserProfile> _userResults = [];
   bool _isLoading = false;
@@ -63,7 +63,7 @@ class _SearchScreenState extends State<SearchScreen>
     try {
       // Search skills
       final skills = await SupabaseService.searchSkillsByText(query);
-      
+
       // Search users
       final users = await SupabaseService.searchUsers(query);
 
@@ -265,12 +265,9 @@ class _SearchScreenState extends State<SearchScreen>
         return Card(
           child: ListTile(
             leading: CircleAvatar(
-              backgroundImage: user.avatarUrl != null
-                  ? NetworkImage(user.avatarUrl!)
-                  : null,
-              child: user.avatarUrl == null
-                  ? const Icon(Icons.person)
-                  : null,
+              backgroundImage:
+                  user.avatarUrl != null ? NetworkImage(user.avatarUrl!) : null,
+              child: user.avatarUrl == null ? const Icon(Icons.person) : null,
             ),
             title: Text('${user.firstName} ${user.lastName}'),
             subtitle: Column(
@@ -334,4 +331,3 @@ class _SearchScreenState extends State<SearchScreen>
     );
   }
 }
-
